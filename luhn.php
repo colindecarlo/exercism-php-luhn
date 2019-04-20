@@ -2,24 +2,45 @@
 
 function isValid($candidate)
 {
-    // strip spaces from the candidate
-    $candidate = str_replace(' ', '', $candidate);
-
-    // reject strings that aren't composed of only
-    // two or more digits
-    if (!preg_match('/^\d{2,}$/', $candidate)) {
+    if (cantBeValidated(stripSpaces($candidate))) {
         return false;
     }
 
-    // double every second digit from starting from the right
-    // if the result is > 9 subtract 9
+    return isDivisibleByTen(calculateSum(stripSpaces($candidate)));
+}
+
+function isDivisibleByTen($dividend)
+{
+    return $dividend % 10 == 0;
+}
+
+function calculateSum($candidate)
+{
+    // convert every second digit starting from the end of the
+    // candidate string
     for ($i = strlen($candidate) - 2; $i >= 0; $i -= 2) {
-        $digit = intval($candidate[$i]) * 2;
-        if ($digit > 9) {
-            $digit -= 9;
-        }
-        $candidate[$i] = strval($digit);
+        $candidate[$i] = convertDigit($candidate[$i]);
     }
 
-    return array_sum(str_split($candidate)) % 10 == 0;
+    return array_sum(str_split($candidate));
+}
+
+function convertDigit($digit)
+{
+    $digit = intval($digit) * 2;
+    if ($digit > 9) {
+        $digit -= 9;
+    }
+
+    return strval($digit);
+}
+
+function cantBeValidated($candidate)
+{
+    return !preg_match('/^\d{2,}$/', $candidate);
+}
+
+function stripSpaces($candidate)
+{
+    return str_replace(' ', '', $candidate);
 }

@@ -15,10 +15,11 @@ function isValid($candidate)
     // if the result is > 9 subtract 9
     $candidate = strrev($candidate);
     for ($i = 1; $i < strlen($candidate); $i += 2) {
-        if ($candidate[$i] == '9') {
-            continue;
+        $digit = intval($candidate[$i]) * 2;
+        if ($digit > 9) {
+            $digit -= 9;
         }
-        $candidate[$i] = ($candidate[$i] * 2) % 9;
+        $candidate[$i] = strval($digit);
     }
 
     return array_sum(str_split($candidate)) % 10 == 0;

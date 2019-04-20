@@ -13,8 +13,7 @@ function isValid($candidate)
 
     // double every second digit from starting from the right
     // if the result is > 9 subtract 9
-    $candidate = strrev($candidate);
-    for ($i = 1; $i < strlen($candidate); $i += 2) {
+    for ($i = strlen($candidate) - 2; $i >= 0; $i -= 2) {
         $digit = intval($candidate[$i]) * 2;
         if ($digit > 9) {
             $digit -= 9;
